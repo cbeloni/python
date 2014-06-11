@@ -22,6 +22,7 @@ class EditableSqlModel(QtSql.QSqlQueryModel):
 
         if index.column() == 1:
             ok = self.setFirstName(id, value)
+
         else:
             ok = self.setLastName(id, value)
 
@@ -29,14 +30,14 @@ class EditableSqlModel(QtSql.QSqlQueryModel):
         return ok
 
     def refresh(self):
-        self.setQuery('select * from person')
+        self.setQuery('select * from person order by id')
         self.setHeaderData(0, QtCore.Qt.Horizontal, "ID")
         self.setHeaderData(1, QtCore.Qt.Horizontal, "First name")
         self.setHeaderData(2, QtCore.Qt.Horizontal, "Last name")
 
     def setFirstName(self, personId, firstName):
         query = QtSql.QSqlQuery()
-        query.prepare('update person set firstname = ? where id = ?')
+        query.prepare('update person set firstname = ?,id = 101 where id = ?')
         query.addBindValue(firstName)
         query.addBindValue(personId)
         return query.exec_()
